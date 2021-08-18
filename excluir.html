@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cadastrar</title>
+    <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <nav class="nav bg-dark ps-2 ">
+            <a class="nav-link active text-light" aria-current="page" href="./index.html">Cadastros</a>
+            <a class="nav-link text-light" href="./consult.html">Consultas</a>
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+            </nav>
+        <div class="m-3">
+            <h3>Excluir</h3>
+            <h5>Sistema utilizado para agendamentos.</h5>
+        </div>
+        <form class="m-3">
+            <div class="mb-3">
+                <label for="formGroupExampleInput" class="form-label">Nome:</label>
+                <input type="text" class="form-control" id="formGroupExampleInput">
+            </div>
+            <div class="mb-3">
+                    <label for="formGroupExampleInput2" class="form-label">Telefone:</label>
+                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="(xx) xxxxx-xxxx">
+            </div>
+            <div class="mb-3">
+            <label for="formGroupExampleInput2" class="form-label">Origem:</label>
+                <select class="form-select" aria-label="Default select example">
+                        <option selected>Celular</option>
+                    <option value="1">Telefone Fixo</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="formGroupExampleInput2" class="form-label">Data do contato:</label>
+                <input type="date" class="form-control" id="formGroupExampleInput2" placeholder="dd/mm/aaaa">
+            </div>
+            <div class="mb-3">
+                <label for="formGroupExampleInput2" class="form-label">Observações:</label>
+                <textarea class="form-control" id="floatingTextarea2" style="height: 100px"></textarea>
+            </div>
+            <div class="col-2 mx-auto">
+                <button type="submit" class="btn btn-secondary">Consultar</button>
+                <button type="submit" class="btn btn-secondary">Excluir</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
