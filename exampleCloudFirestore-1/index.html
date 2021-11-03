@@ -1,0 +1,101 @@
+<html>
+	<head>
+		<title>Web Firebase Example</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+		<script src="firebase.js"></script>
+		<script>
+			function cadastrar(valor1, valor2, valor3){
+				var db = firebase.firestore();
+
+				db.collection("agendamentos").add({
+    				nome: valor1,
+    				endereco: valor2,
+    				bairro: valor3
+				})
+				.then((docRef) => {
+    				console.log("Document written with ID: ", docRef.id);
+				})
+				.catch((error) => {
+    				console.error("Error adding document: ", error);
+				});
+			}
+
+			function editar(valor, valorAtual1, valorAtual2, valorAtual3){
+				var db = firebase.firestore();
+        		var ag = db.collection("agendamentos").where("nome", "==", valor);
+
+		        ag.get()
+		        .then((querySnapshot) => {
+		            querySnapshot.forEach((doc) => {
+		                var dados = db.collection("agendamentos").doc(doc.id);
+
+		                dados.update({
+		                    nome: valorAtual1,
+		                    endereco: valorAtual2,
+		                    bairro: valorAtual3
+		                })
+		                .then(() => {
+		                    console.log("Document successfully updated!");
+		                })
+		                .catch((error) => {
+		                    // The document probably doesn't exist.
+		                    console.error("Error updating document: ", error);
+		                });
+		            });
+		        })
+		        .catch((error) => {
+		            console.log("Error getting documents: ", error);
+		        });
+			}
+
+			function listar(valor){
+				var db = firebase.firestore();
+
+				db.collection("agendamentos").where("nome", "==", valor)
+    				.get()
+    				.then((querySnapshot) => {
+        				querySnapshot.forEach((doc) => {
+            				// doc.data() is never undefined for query doc snapshots
+            				console.log(doc.id, " => ", doc.data());
+
+            				$('#resultado').append(doc.id + ' - ' + doc.data().nome + '<br>');
+        				});
+    				})
+    				.catch((error) => {
+        				console.log("Error getting documents: ", error);
+    				});
+
+			}
+
+			function excluir(valor){
+				var db = firebase.firestore();
+
+				db.collection("agendamentos").where("nome", "==", valor)
+    				.get()
+    				.then((querySnapshot) => {
+        				querySnapshot.forEach((doc) => {
+            				db.collection("agendamentos").doc(doc.id).delete().then(() => {
+    							console.log("Document successfully deleted!");
+							}).catch((error) => {
+							    console.error("Error removing document: ", error);
+							});
+        				});
+    				})
+    				.catch((error) => {
+        				console.log("Error getting documents: ", error);
+    				});
+			}
+		</script>
+	</head>
+	<body>
+		<input type="button" name="btnInserir" onclick="cadastrar('Jeferson','Rua tal, 1', 'Bairro fulano')" value="Inserir">
+		<input type="button" name="btnListar" onclick="listar('Jeferson')" value="Listar">
+		<input type="button" name="btnEditar" onclick="editar('Jeferson','Rodrigo', 'Rua blabla', 'AE Carvalho')" value="Editar">
+		<input type="button" name="btnExcluir" onclick="excluir('Rodrigo')" value="Excluir">
+		<div id="resultado">
+			
+		</div>
+	</body>
+</html>
