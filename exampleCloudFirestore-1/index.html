@@ -6,13 +6,26 @@
 		<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 		<script src="firebase.js"></script>
 		<script>
-			function cadastrar(valor1, valor2, valor3){
+			function lerNome(){
+				var name = document.getElementById("nome").value;				
+				return name;
+			}
+			function lerEnd(){
+				var end = document.getElementById("endereco").value;				
+				return end;
+			}
+			function lerBai(){
+				var bai = document.getElementById("bairro").value;				
+				return bai;
+			}
+
+			function cadastrar(name, end, bai){
 				var db = firebase.firestore();
 
 				db.collection("agendamentos").add({
-    				nome: valor1,
-    				endereco: valor2,
-    				bairro: valor3
+    				nome: name,
+    				endereco: end,
+    				bairro: bai
 				})
 				.then((docRef) => {
     				console.log("Document written with ID: ", docRef.id);
@@ -90,10 +103,16 @@
 		</script>
 	</head>
 	<body>
-		<input type="button" name="btnInserir" onclick="cadastrar('Jeferson','Rua tal, 1', 'Bairro fulano')" value="Inserir">
-		<input type="button" name="btnListar" onclick="listar('Jeferson')" value="Listar">
-		<input type="button" name="btnEditar" onclick="editar('Jeferson','Rodrigo', 'Rua blabla', 'AE Carvalho')" value="Editar">
-		<input type="button" name="btnExcluir" onclick="excluir('Rodrigo')" value="Excluir">
+		<form>
+			Nome: <input type="text" name="nome" id="nome"><br/>
+			Endereço: <input type="text" name="endereco" id="endereco"><br/>
+			Bairro: <input type="text" name="bairro" id="bairro"><br/>
+			<input type="button" name="btnInserir" onclick="cadastrar(lerNome(), lerEnd(),lerBai())" value="Inserir">
+			<input type="button" name="btnListar" onclick="listar('Jeferson')" value="Listar">
+			<input type="button" name="btnEditar" onclick="editar('Jeferson','Rodrigo', 'Rua blabla', 'AE Carvalho')" value="Editar">
+			<input type="button" name="btnExcluir" onclick="excluir('Rodrigo')" value="Excluir">
+		</form>
+		
 		<div id="resultado">
 			
 		</div>
