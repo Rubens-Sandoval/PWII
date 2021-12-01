@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+	<script src="firebase.js"></script>
+	<meta name="format-detection" content="telephone=no">
+	<meta name="msapplication-tap-highlight" content="no">
+	<meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+	<meta name="color-scheme" content="light dark"> 
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.css"> 
+	<link rel="stylesheet" href="css/estilo.css">
+	<script src="bootstrap/js/bootstrap.js"></script>
+	<script>
+
+		function lerNome(){
+			var name = document.getElementById("txtNome").value;				
+			return name;
+		}
+		function lerTel(){
+			var tel = document.getElementById("txtTelefone").value;				
+			return tel;
+		}
+		function lerOri(){
+			var ori = document.getElementById("txtOrigem").value;				
+			return ori;
+		}
+		function lerDat(){
+			var dat = document.getElementById("txtDataContato").value;				
+			return dat;
+		}
+		function lerObs(){
+			var obs = document.getElementById("txtObservacao").value;				
+			return obs;
+		}
+
+		function cadastrar(valor1, valor2, valor3, valor4, valor5){
+				var db = firebase.firestore();
+
+				db.collection("agendamentos").add({
+    				nome: valor1,
+    				telfone: valor2,
+    				origem: valor3,
+    				data_ctt: valor4,
+    				observacao: valor5
+				})
+				.then((docRef) => {
+    				console.log("Document written with ID: ", docRef.id);
+				})
+				.catch((error) => {
+    				console.error("Error adding document: ", error);
+				});
+			}
+
+			function editar(valor, valorAtual1, valorAtual2, valorAtual3){
+				var db = firebase.firestore();
+        		var ag = db.collection("agendamentos").where("nome", "==", valor);
+
+		        ag.get()
+		        .then((querySnapshot) => {
+		            querySnapshot.forEach((doc) => {
+		                var dados = db.collection("agendamentos").doc(doc.id);
+
+		                dados.update({
+		                    nome: valorAtual1,
+		                    endereco: valorAtual2,
+		                    bairro: valorAtual3
+		                })
+		                .then(() => {
+		                    console.log("Document successfully updated!");
+		                })
+		                .catch((error) => {
+		                    // The document probably doesn't exist.
+		                    console.error("Error updating document: ", error);
+		                });
+		            });
+		        })
+		        .catch((error) => {
+		            console.log("Error getting documents: ", error);
+		        });
+			}
+
+			function listar(valor){
+				var db = firebase.firestore();
+
+				db.collection("agendamentos").where("nome", "==", valor)
+    				.get()
+    				.then((querySnapshot) => {
+        				querySnapshot.forEach((doc) => {
+            				// doc.data() is never undefined for query doc snapshots
+            				console.log(doc.id, " => ", doc.data());
+
+            				$('#resultado').append(doc.id + ' - ' + doc.data().nome + '<br>');
+        				});
+    				})
+    				.catch((error) => {
+        				console.log("Error getting documents: ", error);
+    				});
+
+			}
+
+			function excluir(valor){
+				var db = firebase.firestore();
+
+				db.collection("agendamentos").where("nome", "==", valor)
+    				.get()
+    				.then((querySnapshot) => {
+        				querySnapshot.forEach((doc) => {
+            				db.collection("agendamentos").doc(doc.id).delete().then(() => {
+    							console.log("Document successfully deleted!");
+							}).catch((error) => {
+							    console.error("Error removing document: ", error);
+							});
+        				});
+    				})
+    				.catch((error) => {
+        				console.log("Error getting documents: ", error);
+    				});
+			}
+	</script>
+	<title>SISTEMA DE AGENDAMENTO - CLIENTES</title>
+</head> 
+<body> 
+	<div class="container">
+		<div class="row">
+			<nav class="navbar navbar-expand-lg navbar-dark bg-primary col-12">
+				<a class="navbar-brand" href="#">SISTEMA WEB</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarNavDropdown">
+					<ul class="navbar-nav">
+						<li class="nav-item active">
+							<a class="nav-link" href="index.html">Cadastrar<span class="sr-only">(current)</span></a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="consultarClientes.html">Consultar</a>
+						</li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+		<div class="row">
+			<div class="card mb-3 col-12">
+				<div class="card-body">
+					<h5 class="card-title">Cadastrar - Agendamento de Potenciais Clientes</h5>
+					<p class="card-text">Sistema utilizado para agendamento de serviços.</p>
+					<p>
+						<form id="form" name="form">
+							<div class="form-group">
+								<label for="exampleFormControlInput1">Nome:</label>
+								<input type="text" class="form-control" name="txtNome"  id="txtNome">
+							</div>
+							<div class="form-group">
+								<label for="exampleFormControlInput1">Telefone:</label>
+								<input type="tel" class="form-control"  name="txtTelefone" id="txtTelefone" placeholder="(xx)xxxxx-xxxx">
+							</div>
+							<div class="form-group">
+								<label for="exampleFormControlSelect1">Origem:</label>
+								<select class="form-control"  name="txtOrigem" id="txtOrigem">
+									<option>Celular</option>
+									<option>Fixo</option>
+									<option>Whatsapp</option>
+									<option>Facebook</option>
+									<option>Instagram</option>
+									<option>Google Meu Negocio</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="exampleFormControlInput1">Data do Contato:</label>
+								<input type="date" class="form-control"  name="txtDataContato" id="txtDataContato">
+							</div>
+							<div class="form-group">
+								<label for="exampleFormControlTextarea1">Observação</label>
+								<textarea class="form-control" name="txtObservacao" id="txtObservacao" rows="3"></textarea>
+							</div>
+							<input type="button" id="btnInserir" class="btn btn-primary" onclick="cadastrar(lerNome(), lerTel(), lerOri(), lerDat(), lerObs())" value="Cadastrar">
+						</form>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
